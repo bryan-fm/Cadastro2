@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Cadastro</string>
+    <string name="cadastrar">Cadastrar</string>
+    <string name="consulta">Consulta</string>
+    <string name="todo">TODO</string>
+    <string name="tirar_foto">Tirar Foto</string>
+    <string name="salvar">Salvar</string>
+    <string name="cpf">CPF</string>
+    <string name="nome">Nome</string>
+</resources>
