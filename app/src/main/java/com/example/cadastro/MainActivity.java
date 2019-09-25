@@ -1,20 +1,15 @@
 package com.example.cadastro;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.app.DownloadManager;
-import android.app.VoiceInteractor;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -35,7 +30,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     private EditText nome;
-    private EditText cpf;
+    private EditText audio;
     private EditText caminho;
     private AlunoDAO dao;
     private Aluno aluno = null;
@@ -53,8 +48,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Button par = findViewById(R.id.btParar);
+        par.setEnabled(false);
+
         nome = findViewById(R.id.editNome);
-        cpf = findViewById(R.id.editCpf);
+        audio = findViewById(R.id.editAud);
         caminho = findViewById(R.id.editCaminho);
         dao = new AlunoDAO(this);
 
@@ -62,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         if(it.hasExtra("aluno")){
             aluno = (Aluno) it.getSerializableExtra("aluno");
             nome.setText(aluno.getNome().toString());
-            cpf.setText(aluno.getCpf().toString());
+            audio.setText(aluno.getPathAud().toString());
             caminho.setText(aluno.getCaminho().toString());
         }
 
@@ -77,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         if (aluno == null) {
             Aluno a = new Aluno();
             a.setNome(nome.getText().toString());
-            a.setCpf(cpf.getText().toString());
+            a.setPathaud(audio.getText().toString());
             a.setCaminho(caminho.getText().toString());
             long id = dao.inserir(a);
             Toast.makeText(this, "Aluno inserido com id: " + id, Toast.LENGTH_SHORT).show();
@@ -85,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         else
         {
             aluno.setNome(nome.getText().toString());
-            aluno.setCpf(cpf.getText().toString());
+            aluno.setPathaud(audio.getText().toString());
             aluno.setCaminho(caminho.getText().toString());
             dao.atualizar(aluno);
             Toast.makeText(this, "Aluno Atualizado", Toast.LENGTH_SHORT).show();
@@ -161,6 +159,9 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(MainActivity.this, "Recording Completed",
                 Toast.LENGTH_LONG).show();
+
+        EditText edtt = findViewById(R.id.editAud);
+        edtt.setText(AudioSavePathInDevice.toString());
     }
 
 
@@ -182,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
         mediaRecorder.setOutputFile(AudioSavePathInDevice);
+
     }
 
     @Override
@@ -262,6 +264,23 @@ public class MainActivity extends AppCompatActivity {
             // put your code for Version < Marshmallow
             return true;
         }
+    }
+
+    public void ouvir(View view)
+    {
+        EditText edtaud = findViewById(R.id.editAud);
+        mediaPlayer = new MediaPlayer();
+        try {
+            mediaPlayer.setDataSource(edtaud.getText().toString());
+            mediaPlayer.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mediaPlayer.start();
+        Toast.makeText(MainActivity.this, "Recording Playing",
+                Toast.LENGTH_LONG).show();
+
     }
 
 
