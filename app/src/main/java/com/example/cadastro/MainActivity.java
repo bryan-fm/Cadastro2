@@ -6,15 +6,21 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.DownloadManager;
+import android.app.VoiceInteractor;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -24,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
     private AlunoDAO dao;
     private Aluno aluno = null;
 
+
+    String AudioSavePathInDevice = null;
+    MediaRecorder mediaRecorder ;
+    Random random ;
+    String RandomAudioFileName = "ABCDEFGHIJKLMNOP";
+    public static final int RequestPermissionCode = 1;
+    MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +108,81 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void gravar(View view)
+    {
+        if(!isRecordAudioPermissionGranted())
+        {
+            Toast.makeText(getApplicationContext(), "Need to request permission", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "No need to request permission", Toast.LENGTH_SHORT).show();
+        }
+
+        if(checkPermission()) {
+
+            AudioSavePathInDevice =
+                    Environment.getExternalStorageDirectory().getAbsolutePath() + "/Demo/" +
+                            System.currentTimeMillis() + "AudioRecording.3gp";
+
+            MediaRecorderReady();
+
+            try {
+                mediaRecorder.prepare();
+                mediaRecorder.start();
+            } catch (IllegalStateException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            Button btaud = findViewById(R.id.btProc);
+            btaud.setEnabled(false);
+
+            Button btpara = findViewById(R.id.btParar);
+            btpara.setEnabled(true);
+
+            Toast.makeText(MainActivity.this, "Recording started",
+                    Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    public void parargrava(View view)
+    {
+        mediaRecorder.stop();
+        Button btpara = findViewById(R.id.btParar);
+        btpara.setEnabled(false);
+
+        Button btaud = findViewById(R.id.btProc);
+        btaud.setEnabled(true);
+
+
+        Toast.makeText(MainActivity.this, "Recording Completed",
+                Toast.LENGTH_LONG).show();
+    }
+
+
 
     OutputStream outputStream;
+
+        public boolean checkPermission() {
+            int result = ContextCompat.checkSelfPermission(getApplicationContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int result1 = ContextCompat.checkSelfPermission(getApplicationContext(),
+                    Manifest.permission.RECORD_AUDIO);
+            return result == PackageManager.PERMISSION_GRANTED &&
+            result1 == PackageManager.PERMISSION_GRANTED;
+        }
+
+    public void MediaRecorderReady(){
+        mediaRecorder=new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        mediaRecorder.setOutputFile(AudioSavePathInDevice);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -151,6 +238,29 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    private boolean isRecordAudioPermissionGranted()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                // put your code for Version>=Marshmallow
+                return true;
+            } else {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)) {
+                    Toast.makeText(this,
+                            "App required access to audio", Toast.LENGTH_SHORT).show();
+                }
+                requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO
+                },325);
+                return false;
+            }
+
+        } else {
+            // put your code for Version < Marshmallow
+            return true;
         }
     }
 

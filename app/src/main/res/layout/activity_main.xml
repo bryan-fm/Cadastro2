@@ -124,9 +124,9 @@
         android:layout_marginTop="36dp"
         android:layout_marginEnd="27dp"
         android:layout_marginBottom="51dp"
-        android:drawableBottom="@drawable/ic_search_black_24dp"
-        android:text="Escolher"
-        android:onClick="escolher"
+        android:drawableBottom="@android:drawable/presence_audio_online"
+        android:onClick="gravar"
+        android:text="Gravar"
         app:layout_constraintBottom_toTopOf="@+id/btSalvar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.373"
@@ -144,5 +144,14 @@
         android:visibility="invisible"
         tools:layout_editor_absoluteX="95dp"
         tools:layout_editor_absoluteY="667dp" />
+
+    <Button
+        android:id="@+id/btParar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="parargrava"
+        android:text="Button"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="558dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
