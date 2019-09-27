@@ -6,7 +6,7 @@ public class Aluno implements Serializable {
 
     private Integer id;
     private String nome;
-    private String cpf;
+    private String pathaud;
     private String caminho;
 
     public Integer getId() {
@@ -25,12 +25,12 @@ public class Aluno implements Serializable {
         this.nome = nome;
     }
 
-    public String getCpf() {
-        return cpf;
+    public String getPathAud() {
+        return pathaud;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setPathaud(String pathaud) {
+        this.pathaud = pathaud;
     }
 
     public String getCaminho() {

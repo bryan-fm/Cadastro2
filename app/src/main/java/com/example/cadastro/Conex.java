@@ -20,7 +20,7 @@ public class Conex extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL("Create Table Aluno(id integer primary key autoincrement, " +
-                "nome varchar(50), cpf varchar(50), caminho varchar(200))");
+                "nome varchar(50), audio varchar(200), caminho varchar(200))");
     }
 
     @Override

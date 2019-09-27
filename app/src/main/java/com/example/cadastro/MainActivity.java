@@ -14,10 +14,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -72,22 +75,38 @@ public class MainActivity extends AppCompatActivity {
 
     public void salvar (View view){
 
-        if (aluno == null) {
-            Aluno a = new Aluno();
-            a.setNome(nome.getText().toString());
-            a.setPathaud(audio.getText().toString());
-            a.setCaminho(caminho.getText().toString());
-            long id = dao.inserir(a);
-            Toast.makeText(this, "Aluno inserido com id: " + id, Toast.LENGTH_SHORT).show();
+        nome = findViewById(R.id.editNome);
+        audio = findViewById(R.id.editAud);
+        caminho = findViewById(R.id.editCaminho);
+
+        if(nome.getText().toString().matches("") || audio.getText().toString().matches("") || caminho.getText().toString().matches(""))
+
+        {
+            Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
         }
+
         else
         {
-            aluno.setNome(nome.getText().toString());
-            aluno.setPathaud(audio.getText().toString());
-            aluno.setCaminho(caminho.getText().toString());
-            dao.atualizar(aluno);
-            Toast.makeText(this, "Aluno Atualizado", Toast.LENGTH_SHORT).show();
+            if (aluno == null) {
+                Aluno a = new Aluno();
+                a.setNome(nome.getText().toString());
+                a.setPathaud(audio.getText().toString());
+                a.setCaminho(caminho.getText().toString());
+                long id = dao.inserir(a);
+                Toast.makeText(this, "Aluno inserido com id: " + id, Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                aluno.setNome(nome.getText().toString());
+                aluno.setPathaud(audio.getText().toString());
+                aluno.setCaminho(caminho.getText().toString());
+                dao.atualizar(aluno);
+                Toast.makeText(this, "Aluno Atualizado", Toast.LENGTH_SHORT).show();
+            }
+
+            finish();
         }
+
     }
 
     public static final int MY_CAMERA_REQUEST_CODE = 100;
@@ -120,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
             AudioSavePathInDevice =
                     Environment.getExternalStorageDirectory().getAbsolutePath() + "/Demo/" +
-                            System.currentTimeMillis() + "AudioRecording.3gp";
+                            System.currentTimeMillis() + "AudioRecording.mp3";
 
             MediaRecorderReady();
 
@@ -190,42 +209,50 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode,resultCode,data);
-        Bitmap bit = (Bitmap)data.getExtras().get("data");
-        ImageView img = findViewById(R.id.foto);
 
-        File filepath = Environment.getExternalStorageDirectory();
-        File dir = new File(filepath.getAbsolutePath() + "/Demo");
-        dir.mkdir();
-        File file = new File(dir, System.currentTimeMillis()+".jpg");
-
-        String caminho = file.toString();
         try
         {
-           outputStream  = new FileOutputStream(file);
+            Bitmap bit = (Bitmap)data.getExtras().get("data");
+            ImageView img = findViewById(R.id.foto);
+
+            File filepath = Environment.getExternalStorageDirectory();
+            File dir = new File(filepath.getAbsolutePath() + "/Demo");
+            dir.mkdir();
+            File file = new File(dir, System.currentTimeMillis()+".jpg");
+
+            String caminho = file.toString();
+            try
+            {
+                outputStream  = new FileOutputStream(file);
+            }
+            catch (FileNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+
+            bit.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            Toast.makeText(getApplicationContext(),"Imagem Salva" + caminho,Toast.LENGTH_SHORT).show();
+            try {
+                outputStream.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            File imgfile = new File(caminho);
+            Bitmap mybitmap = BitmapFactory.decodeFile(imgfile.getAbsolutePath());
+            img.setImageBitmap(mybitmap);
+            EditText tx = findViewById(R.id.editCaminho);
+            tx.setText(file.toString());
         }
-        catch (FileNotFoundException e)
+        catch(Exception eft)
         {
-            e.printStackTrace();
+           eft.printStackTrace();
         }
-
-        bit.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-        Toast.makeText(getApplicationContext(),"Imagem Salva" + caminho,Toast.LENGTH_SHORT).show();
-        try {
-            outputStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        File imgfile = new File(caminho);
-        Bitmap mybitmap = BitmapFactory.decodeFile(imgfile.getAbsolutePath());
-        img.setImageBitmap(mybitmap);
-        EditText tx = findViewById(R.id.editCaminho);
-        tx.setText(file.toString());
 
 
 
@@ -270,16 +297,25 @@ public class MainActivity extends AppCompatActivity {
     {
         EditText edtaud = findViewById(R.id.editAud);
         mediaPlayer = new MediaPlayer();
-        try {
-            mediaPlayer.setDataSource(edtaud.getText().toString());
-            mediaPlayer.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        if(edtaud.getText().toString().matches(""))
+        {
+            Toast.makeText(this, "Não Há Audio", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            try {
+                mediaPlayer.setDataSource(edtaud.getText().toString());
+                mediaPlayer.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            mediaPlayer.start();
+            Toast.makeText(MainActivity.this, "Recording Playing",
+                    Toast.LENGTH_LONG).show();
         }
 
-        mediaPlayer.start();
-        Toast.makeText(MainActivity.this, "Recording Playing",
-                Toast.LENGTH_LONG).show();
 
     }
 
