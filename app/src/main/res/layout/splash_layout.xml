@@ -5,41 +5,4 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light"
-    android:backgroundTint="#8BC34A">
-
-    <TextView
-        android:id="@+id/idbryan"
-        android:layout_width="0dp"
-        android:layout_height="102dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="612dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="17dp"
-        android:fontFamily="@font/coming_soon"
-        android:gravity="center"
-        android:justificationMode="none"
-        android:text="Bryan França Medeiros - TCC Univale"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColorLink="#0C0C0C"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="366dp"
-        android:layout_height="398dp"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="147dp"
-        android:layout_marginEnd="23dp"
-        android:layout_marginBottom="102dp"
-        android:background="@mipmap/ic_launcher_foreground"
-        app:layout_constraintBottom_toTopOf="@+id/idbryan"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    android:background="@drawable/jishinbg"/>

@@ -8,13 +8,15 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="393dp"
+        android:layout_height="35dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/nome"
+        android:gravity="center"
+        android:text="Nome do Objeto"
+        android:textSize="25dp"
         app:layout_constraintBottom_toTopOf="@+id/editNome"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.67"
@@ -56,6 +58,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@android:color/darker_gray"
+        android:drawableBottom="@android:drawable/ic_input_add"
         android:onClick="salvar"
         android:text="@string/salvar"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -63,7 +67,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editAud"
-        app:layout_constraintVertical_bias="0.886" />
+        app:layout_constraintVertical_bias="0.965" />
 
     <Button
         android:id="@+id/btFoto"
@@ -72,20 +76,23 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
+        android:background="@android:color/darker_gray"
         android:drawableBottom="@android:drawable/ic_menu_camera"
         android:onClick="checkPermission"
         android:text="@string/tirar_foto"
         app:layout_constraintBottom_toTopOf="@+id/btSalvar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.945"
+        app:layout_constraintHorizontal_bias="0.934"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editAud"
-        app:layout_constraintVertical_bias="0.336" />
+        app:layout_constraintVertical_bias="0.404" />
 
     <ImageView
         android:id="@+id/foto"
-        android:layout_width="246dp"
-        android:layout_height="199dp"
+        android:layout_width="251dp"
+        android:layout_height="286dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="1dp"
         android:background="#4CAF50"
         android:backgroundTint="#030C44"
         android:backgroundTintMode="add"
@@ -106,16 +113,18 @@
         android:id="@+id/btProc"
         android:layout_width="111dp"
         android:layout_height="70dp"
-        android:layout_marginEnd="155dp"
-        android:drawableBottom="@android:drawable/presence_audio_online"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="23dp"
+        android:layout_marginBottom="64dp"
+        android:background="@android:color/darker_gray"
+        android:drawableBottom="@android:drawable/presence_audio_busy"
         android:onClick="gravar"
         android:text="Gravar"
         app:layout_constraintBottom_toTopOf="@+id/btSalvar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.98"
-        app:layout_constraintStart_toEndOf="@+id/btFoto"
-        app:layout_constraintTop_toBottomOf="@+id/foto"
-        app:layout_constraintVertical_bias="0.105" />
+        app:layout_constraintEnd_toStartOf="@+id/btParar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/foto" />
 
     <EditText
         android:id="@+id/editCaminho"
@@ -130,35 +139,37 @@
 
     <Button
         android:id="@+id/btParar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="150dp"
+        android:layout_width="111dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="64dp"
+        android:background="@android:color/darker_gray"
+        android:drawableBottom="@android:drawable/ic_media_pause"
         android:onClick="parargrava"
         android:text="Parar GRAV"
         app:layout_constraintBottom_toTopOf="@+id/btSalvar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.993"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btFoto"
-        app:layout_constraintVertical_bias="0.631" />
+        app:layout_constraintEnd_toStartOf="@+id/btOuvir"
+        app:layout_constraintStart_toEndOf="@+id/btProc"
+        app:layout_constraintTop_toBottomOf="@+id/foto" />
 
     <Button
         android:id="@+id/btOuvir"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="81dp"
-        android:layout_marginEnd="173dp"
-        android:layout_marginBottom="18dp"
+        android:layout_width="111dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="155dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="64dp"
+        android:background="@android:color/darker_gray"
+        android:drawableBottom="@android:drawable/ic_media_play"
         android:onClick="ouvir"
         android:text="Escutar"
         app:layout_constraintBottom_toTopOf="@+id/btSalvar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btFoto"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toEndOf="@+id/btParar"
+        app:layout_constraintTop_toBottomOf="@+id/btFoto" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
