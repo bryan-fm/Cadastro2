@@ -21,7 +21,7 @@ public class Splash extends Activity {
 
     private void mostrarMainActivity() {
         Intent intent = new Intent(
-                this,ListarActivity.class
+                this,Escolherletra.class
         );
         startActivity(intent);
         finish();

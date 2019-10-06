@@ -2,15 +2,26 @@ package com.example.cadastro;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlunoDAO {
+public class AlunoDAO extends AppCompatActivity {
 
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
     private Conex conexao;
     private SQLiteDatabase banco;
 
@@ -46,6 +57,7 @@ public class AlunoDAO {
         return alunos;
     }
 
+
     public void excluir(Aluno a){
         banco.delete("aluno", "id = ?", new String[]{a.getId().toString()});
     }
@@ -58,4 +70,5 @@ public class AlunoDAO {
 
         banco.update("aluno", values,"id = ?", new String[]{aluno.getId().toString()});
     }
+
 }

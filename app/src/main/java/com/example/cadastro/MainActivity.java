@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
         im.setImageBitmap(mybitmap);
     }
 
+
+
     public void salvar (View view){
 
         nome = findViewById(R.id.editNome);

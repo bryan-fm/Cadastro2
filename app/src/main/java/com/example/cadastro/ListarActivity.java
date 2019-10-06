@@ -6,9 +6,13 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -22,6 +26,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +43,19 @@ public class ListarActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listar);
-
         lista = findViewById(R.id.lista_aluno);
         dao = new AlunoDAO(this);
-        alunos = dao.obterAll();
+
+        SharedPreferences settings = getSharedPreferences("Letra", Context.MODE_PRIVATE);
+        String a = settings.getString("nome", "%");
+
+        TextView tx = findViewById(R.id.txletra);
+        tx.setText(a);
+
+        alunos = obterAll();
         alunosFilt.addAll(alunos);
 
         ArrayAdapter<Aluno> adapt = new ArrayAdapter<Aluno>(this, android.R.layout.simple_expandable_list_item_1, alunosFilt);
@@ -51,6 +64,33 @@ public class ListarActivity extends AppCompatActivity {
         registerForContextMenu(lista);
     }
 
+
+    private Conex conexao;
+    private SQLiteDatabase banco;
+
+    public List<Aluno> obterAll()
+    {
+        TextView tx = findViewById(R.id.txletra);
+        String b = tx.getText().toString();
+        String[] letra = {b.toString()};
+
+        conexao = new Conex(this);
+        banco = conexao.getWritableDatabase();
+
+        List<Aluno> alunos = new ArrayList<>();
+        Cursor cursor = banco.query("Aluno", new String[]{"id", "nome", "audio", "caminho"}, "nome"+" LIKE ?",letra, null, null, null);
+
+        while (cursor.moveToNext()) {
+            Aluno a = new Aluno();
+            a.setId(cursor.getInt(0));
+            a.setNome(cursor.getString(1));
+            a.setPathaud(cursor.getString(2));
+            a.setCaminho(cursor.getString(3));
+            alunos.add(a);
+        }
+
+        return alunos;
+    }
 
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater i = getMenuInflater();
@@ -125,8 +165,12 @@ public class ListarActivity extends AppCompatActivity {
 
     @Override
     public void onResume(){
+        SharedPreferences settings = getSharedPreferences("Letra", Context.MODE_PRIVATE);
+        String n = settings.getString("nome", "%");
+
+        String alfa[] = {n};
         super.onResume();
-        alunos = dao.obterAll();
+        //alunos = dao.obterAll(alfa);
         alunosFilt.clear();
         alunosFilt.addAll(alunos);
         lista.invalidateViews();
@@ -141,4 +185,5 @@ public class ListarActivity extends AppCompatActivity {
         startActivity(it);
 
     }
+
 }

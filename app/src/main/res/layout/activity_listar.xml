@@ -20,5 +20,14 @@
         android:layout_width="419dp"
         android:layout_height="663dp" />
 
+    <TextView
+        android:id="@+id/txletra"
+        android:layout_width="79dp"
+        android:layout_height="38dp"
+        android:text="A"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="677dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
