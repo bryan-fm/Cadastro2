@@ -38,6 +38,7 @@ public class AlunoDAO extends AppCompatActivity {
         values.put("caminho", aluno.getCaminho());
 
         return banco.insert("Aluno", null, values);
+
     }
 
     public List<Aluno> obterAll()

@@ -37,5 +37,11 @@ public class Escolherletra extends AppCompatActivity {
         //toast.show();
     }
 
+    public void memo(View view)
+    {
+        Intent i = new Intent(Escolherletra.this, MemoActivity.class);
+        startActivity(i);
+    }
+
 
 }

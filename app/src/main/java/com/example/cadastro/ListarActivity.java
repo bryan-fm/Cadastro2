@@ -165,15 +165,13 @@ public class ListarActivity extends AppCompatActivity {
 
     @Override
     public void onResume(){
-        SharedPreferences settings = getSharedPreferences("Letra", Context.MODE_PRIVATE);
-        String n = settings.getString("nome", "%");
 
-        String alfa[] = {n};
         super.onResume();
         //alunos = dao.obterAll(alfa);
         alunosFilt.clear();
         alunosFilt.addAll(alunos);
         lista.invalidateViews();
+        obterAll();
     }
 
     public void atualizar (MenuItem item){
